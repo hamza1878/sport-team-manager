@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Coach - Test Local</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 2rem;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.primary .stat-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .stat-card.success .stat-icon {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+        }
+
+        .stat-card.warning .stat-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+        }
+
+        .stat-card.danger .stat-icon {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            margin-top: 1rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-title {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-header h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>⚽ Dashboard Coach - Test Local</h1>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Matchs</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="totalJoueurs">5</div>
+                <div class="stat-label">Joueurs</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon">⚽</div>
+                <div class="stat-value" id="totalButs">0</div>
+                <div class="stat-label">Buts Totaux</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon">🟨</div>
+                <div class="stat-value" id="totalCartons">0</div>
+                <div class="stat-label">Cartons</div>
+            </div>
+        </div>
+
+        <!-- Graphiques -->
+        <div class="section-card">
+            <h2 class="section-title">Analyses des Performances</h2>
+            
+            <div class="charts-grid">
+                <!-- Chart 1: Buts par Joueur -->
+                <div>
+                    <h3 class="chart-title">🎯 Buts par Joueur</h3>
+                    <div class="chart-container">
+                        <canvas id="chart1"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Notes Moyennes -->
+                <div>
+                    <h3 class="chart-title">⭐ Notes Moyennes</h3>
+                    <div class="chart-container">
+                        <canvas id="chart2"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Passes Décisives -->
+                <div>
+                    <h3 class="chart-title">🎁 Passes Décisives</h3>
+                    <div class="chart-container">
+                        <canvas id="chart3"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Minutes Jouées -->
+                <div>
+                    <h3 class="chart-title">⏱️ Temps de Jeu</h3>
+                    <div class="chart-container">
+                        <canvas id="chart4"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 5: Cartons -->
+                <div>
+                    <h3 class="chart-title">🟨🟥 Discipline</h3>
+                    <div class="chart-container">
+                        <canvas id="chart5"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 6: Performance Globale -->
+                <div>
+                    <h3 class="chart-title">📊 Performance Globale</h3>
+                    <div class="chart-container">
+                        <canvas id="chart6"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        // 🎲 DONNÉES DE TEST LOCALES (simulant votre base de données)
+        const joueurs = [
+            { id: 1, nom: "Van Persie", prenom: "Robin", position: "Attaquant", age: 40 },
+            { id: 2, nom: "Ronaldo", prenom: "Cristiano", position: "Attaquant", age: 39 },
+            { id: 4, nom: "Vidic", prenom: "Nemanja", position: "Defenseur", age: 42 },
+            { id: 7, nom: "Rooney", prenom: "Wayne", position: "Milieu", age: 38 },
+            { id: 8, nom: "De Gea", prenom: "David", position: "Gardien", age: 33 }
+        ];
+
+        const performances = [
+            { id: 1, joueurId: 1, matchId: 1, buts: 2, passesDecisives: 0, noteMatch: 9, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 2, joueurId: 2, matchId: 1, buts: 1, passesDecisives: 2, noteMatch: 8.5, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 3, joueurId: 4, matchId: 1, buts: 1, passesDecisives: 1, noteMatch: 8, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 4, joueurId: 7, matchId: 2, buts: 1, passesDecisives: 1, noteMatch: 8.5, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 5, joueurId: 8, matchId: 2, buts: 1, passesDecisives: 0, noteMatch: 8, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 6, joueurId: 4, matchId: 2, buts: 0, passesDecisives: 1, noteMatch: 7.5, minutesJouees: 85, cartonJaune: 1, cartonRouge: 0 },
+            { id: 7, joueurId: 1, matchId: 3, buts: 2, passesDecisives: 0, noteMatch: 9, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
+            { id: 8, joueurId: 2, matchId: 3, buts: 0, passesDecisives: 2, noteMatch: 8, minutesJouees: 75, cartonJaune: 0, cartonRouge: 0 }
+        ];
+
+        console.log('📊 Données de test chargées:', { joueurs, performances });
+
+        // Créer map des joueurs
+        const joueursMap = {};
+        joueurs.forEach(j => {
+            joueursMap[j.id] = `${j.prenom} ${j.nom}`;
+        });
+
+        // Analyse des données
+        const analyseData = {
+            joueurs: {},
+            totalButs: 0,
+            totalPasses: 0,
+            totalCartons: 0
+        };
+
+        performances.forEach(perf => {
+            const joueurNom = joueursMap[perf.joueurId] || `Joueur ${perf.joueurId}`;
+            
+            if (!analyseData.joueurs[joueurNom]) {
+                analyseData.joueurs[joueurNom] = {
+                    buts: 0,
+                    passes: 0,
+                    minutes: 0,
+                    notes: [],
+                    cartonsJaunes: 0,
+                    cartonsRouges: 0
+                };
+            }
+
+            analyseData.joueurs[joueurNom].buts += perf.buts;
+            analyseData.joueurs[joueurNom].passes += perf.passesDecisives;
+            analyseData.joueurs[joueurNom].minutes += perf.minutesJouees;
+            if (perf.noteMatch > 0) analyseData.joueurs[joueurNom].notes.push(perf.noteMatch);
+            analyseData.joueurs[joueurNom].cartonsJaunes += perf.cartonJaune;
+            analyseData.joueurs[joueurNom].cartonsRouges += perf.cartonRouge;
+
+            analyseData.totalButs += perf.buts;
+            analyseData.totalPasses += perf.passesDecisives;
+            analyseData.totalCartons += (perf.cartonJaune + perf.cartonRouge);
+        });
+
+        // Mise à jour des stats
+        document.getElementById('totalButs').textContent = analyseData.totalButs;
+        document.getElementById('totalCartons').textContent = analyseData.totalCartons;
+        document.getElementById('totalJoueurs').textContent = joueurs.length;
+
+        // Préparer les données
+        const joueursNoms = Object.keys(analyseData.joueurs);
+
+        // Configuration commune
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            }
+        };
+
+        // Chart 1: Buts par joueur
+        new Chart(document.getElementById('chart1'), {
+            type: 'bar',
+            data: {
+                labels: joueursNoms,
+                datasets: [{
+                    label: 'Buts',
+                    data: joueursNoms.map(j => analyseData.joueurs[j].buts),
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: 'rgb(102, 126, 234)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...commonOptions,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        // Chart 2: Notes moyennes (Radar)
+        const notesMoyennes = joueursNoms.map(j => {
+            const notes = analyseData.joueurs[j].notes;
+            return notes.length > 0 ? (notes.reduce((a, b) => a + b, 0) / notes.length).toFixed(1) : 0;
+        });
+
+        new Chart(document.getElementById('chart2'), {
+            type: 'radar',
+            data: {
+                labels: joueursNoms,
+                datasets: [{
+                    label: 'Note Moyenne',
+                    data: notesMoyennes,
+                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                    borderColor: 'rgb(16, 185, 129)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgb(16, 185, 129)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(16, 185, 129)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: { beginAtZero: true, max: 10 }
+                }
+            }
+        });
+
+        // Chart 3: Passes décisives (Doughnut)
+        new Chart(document.getElementById('chart3'), {
+            type: 'doughnut',
+            data: {
+                labels: joueursNoms,
+                datasets: [{
+                    data: joueursNoms.map(j => analyseData.joueurs[j].passes),
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.8)',
+                        'rgba(118, 75, 162, 0.8)',
+                        'rgba(16, 185, 129, 0.8)',
+                        'rgba(245, 158, 11, 0.8)',
+                        'rgba(239, 68, 68, 0.8)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
+
+        // Chart 4: Minutes jouées
+        new Chart(document.getElementById('chart4'), {
+            type: 'bar',
+            data: {
+                labels: joueursNoms,
+                datasets: [{
+                    label: 'Minutes',
+                    data: joueursNoms.map(j => analyseData.joueurs[j].minutes),
+                    backgroundColor: 'rgba(245, 158, 11, 0.8)',
+                    borderColor: 'rgb(245, 158, 11)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                ...commonOptions,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // Chart 5: Cartons
+        new Chart(document.getElementById('chart5'), {
+            type: 'bar',
+            data: {
+                labels: joueursNoms,
+                datasets: [
+                    {
+                        label: 'Cartons Jaunes',
+                        data: joueursNoms.map(j => analyseData.joueurs[j].cartonsJaunes),
+                        backgroundColor: 'rgba(245, 158, 11, 0.8)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Cartons Rouges',
+                        data: joueursNoms.map(j => analyseData.joueurs[j].cartonsRouges),
+                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
+                        borderColor: 'rgb(239, 68, 68)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: true, position: 'top' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        // Chart 6: Performance globale (Polar)
+        new Chart(document.getElementById('chart6'), {
+            type: 'polarArea',
+            data: {
+                labels: joueursNoms,
+                datasets: [{
+                    label: 'Score Global',
+                    data: joueursNoms.map(j => {
+                        const d = analyseData.joueurs[j];
+                        return (d.buts * 3) + (d.passes * 2) + (d.notes.length > 0 ? d.notes.reduce((a, b) => a + b, 0) / d.notes.length : 0);
+                    }),
+                    backgroundColor: [
+                        'rgba(102, 126, 234, 0.6)',
+                        'rgba(118, 75, 162, 0.6)',
+                        'rgba(16, 185, 129, 0.6)',
+                        'rgba(245, 158, 11, 0.6)',
+                        'rgba(239, 68, 68, 0.6)'
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        console.log('✅ Tous les graphiques sont générés !');
+    </script>
+</body>
+</html>

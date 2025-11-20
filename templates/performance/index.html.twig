@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Performance index{% endblock %}
+
+{% block body %}
+    <h1>Performance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>MinutesJouees</th>
+                <th>Buts</th>
+                <th>PassesDecisives</th>
+                <th>CartonJaune</th>
+                <th>CartonRouge</th>
+                <th>NoteMatch</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for performance in performances %}
+            <tr>
+                <td>{{ performance.id }}</td>
+                <td>{{ performance.minutesJouees }}</td>
+                <td>{{ performance.buts }}</td>
+                <td>{{ performance.passesDecisives }}</td>
+                <td>{{ performance.cartonJaune }}</td>
+                <td>{{ performance.cartonRouge }}</td>
+                <td>{{ performance.noteMatch }}</td>
+                <td>
+                    <a href="{{ path('app_performance_show', {'id': performance.id}) }}">show</a>
+                    <a href="{{ path('app_performance_edit', {'id': performance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_performance_new') }}">Create new</a>
+{% endblock %}
