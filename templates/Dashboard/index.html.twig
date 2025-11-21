@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Coach - Test Local</title>
+    <title>Manchester United - Performance Analytics Dashboard</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --border-color: #e2e8f0;
+            --mu-red: #DA291C;
+            --mu-red-dark: #B71C1C;
+            --mu-yellow: #FBE122;
+            --mu-black: #000000;
+            --mu-dark-bg: #0A0A0A;
+            --mu-dark-card: #141414;
+            --mu-border: #1F1F1F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --success: #00B050;
+            --warning: #FF9500;
         }
 
         * {
@@ -23,112 +28,312 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--mu-dark-bg);
             min-height: 100vh;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
             padding: 2rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(218, 41, 28, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(251, 225, 34, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .dashboard-container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .dashboard-header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
+            background: var(--mu-dark-card);
+            border: 1px solid var(--mu-border);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .dashboard-header h1 {
-            font-size: 2.5rem;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .mu-logo {
+            width: 60px;
+            height: 60px;
+            background: var(--mu-red);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 4px 12px rgba(218, 41, 28, 0.4);
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-title h1 {
+            font-size: 1.75rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .season-badge {
+            background: rgba(218, 41, 28, 0.1);
+            border: 1px solid var(--mu-red);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--mu-red);
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: var(--mu-dark-card);
+            border: 1px solid var(--mu-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--mu-red);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--mu-red);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(218, 41, 28, 0.2);
         }
 
-        .stat-card .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            background: rgba(218, 41, 28, 0.1);
         }
 
-        .stat-card.primary .stat-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .stat-card.primary .stat-icon { background: rgba(218, 41, 28, 0.1); }
+        .stat-card.success .stat-icon { background: rgba(0, 176, 80, 0.1); }
+        .stat-card.warning .stat-icon { background: rgba(255, 149, 0, 0.1); }
+        .stat-card.info .stat-icon { background: rgba(251, 225, 34, 0.1); }
+
+        .stat-trend {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(0, 176, 80, 0.1);
+            color: var(--success);
         }
 
-        .stat-card.success .stat-icon {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
+        .stat-trend.down {
+            background: rgba(255, 68, 68, 0.1);
+            color: #FF4444;
         }
 
-        .stat-card.warning .stat-icon {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-
-        .stat-card.danger .stat-icon {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
+        .stat-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 2.5rem;
+            font-weight: 800;
             color: var(--text-primary);
-            margin-bottom: 0.25rem;
+            line-height: 1;
         }
 
         .stat-label {
             color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
+            font-size: 0.813rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
+        .stat-sublabel {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
         .section-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            background: var(--mu-dark-card);
+            border: 1px solid var(--mu-border);
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--mu-border);
         }
 
         .section-title {
             font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 28px;
+            background: var(--mu-red);
+            border-radius: 2px;
+        }
+
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--mu-border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            font-size: 0.813rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            background: var(--mu-red);
+            border-color: var(--mu-red);
+            color: white;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 380px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--mu-border);
+            margin-top: 1rem;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+        }
+
+        .chart-wrapper {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--mu-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1rem;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 1.5rem;
@@ -137,128 +342,201 @@
             gap: 0.5rem;
         }
 
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-            border-radius: 2px;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 350px;
-            margin-top: 1rem;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 2rem;
-        }
-
-        .chart-title {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
+        .chart-badge {
+            background: rgba(218, 41, 28, 0.1);
+            color: var(--mu-red);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
             font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-right {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
             }
-            .charts-grid {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .stats-grid {
                 grid-template-columns: 1fr;
             }
-            .dashboard-header h1 {
-                font-size: 1.75rem;
-            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--mu-dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--mu-red);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--mu-red-dark);
         }
     </style>
 </head>
 <body>
     <div class="dashboard-container">
+        <!-- Header -->
         <div class="dashboard-header">
-            <h1>⚽ Dashboard Coach - Test Local</h1>
+            <div class="header-left">
+                <div class="mu-logo">MU</div>
+                <div class="header-title">
+                    <h1>Performance Analytics Dashboard</h1>
+                    <div class="header-subtitle">Manchester United F.C.</div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="season-badge">Saison 2024/25</div>
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    LIVE DATA
+                </div>
+            </div>
         </div>
 
         <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card primary">
-                <div class="stat-icon">🏆</div>
-                <div class="stat-value">3</div>
-                <div class="stat-label">Matchs</div>
+                <div class="stat-header">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-trend">+2</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Matchs Joués</div>
+                    <div class="stat-sublabel">Premier League</div>
+                </div>
             </div>
+
             <div class="stat-card success">
-                <div class="stat-icon">👥</div>
-                <div class="stat-value" id="totalJoueurs">5</div>
-                <div class="stat-label">Joueurs</div>
+                <div class="stat-header">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-trend">100%</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalJoueurs">5</div>
+                    <div class="stat-label">Effectif Actif</div>
+                    <div class="stat-sublabel">Joueurs disponibles</div>
+                </div>
             </div>
+
             <div class="stat-card warning">
-                <div class="stat-icon">⚽</div>
-                <div class="stat-value" id="totalButs">0</div>
-                <div class="stat-label">Buts Totaux</div>
+                <div class="stat-header">
+                    <div class="stat-icon">⚽</div>
+                    <div class="stat-trend">+15%</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalButs">0</div>
+                    <div class="stat-label">Buts Marqués</div>
+                    <div class="stat-sublabel">Total de la saison</div>
+                </div>
             </div>
-            <div class="stat-card danger">
-                <div class="stat-icon">🟨</div>
-                <div class="stat-value" id="totalCartons">0</div>
-                <div class="stat-label">Cartons</div>
+
+            <div class="stat-card info">
+                <div class="stat-header">
+                    <div class="stat-icon">🟨</div>
+                    <div class="stat-trend down">-3</div>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalCartons">0</div>
+                    <div class="stat-label">Cartons Totaux</div>
+                    <div class="stat-sublabel">Discipline de l'équipe</div>
+                </div>
             </div>
         </div>
 
-        <!-- Graphiques -->
+        <!-- Performance Analysis -->
         <div class="section-card">
-            <h2 class="section-title">Analyses des Performances</h2>
+            <div class="section-header">
+                <h2 class="section-title">Analyses Détaillées des Performances</h2>
+                <div class="view-options">
+                    <button class="view-btn active">Tout</button>
+                    <button class="view-btn">Attaque</button>
+                    <button class="view-btn">Défense</button>
+                </div>
+            </div>
             
             <div class="charts-grid">
-                <!-- Chart 1: Buts par Joueur -->
-                <div>
-                    <h3 class="chart-title">🎯 Buts par Joueur</h3>
+                <!-- Chart 1: Buts -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        🎯 Contribution Offensive
+                        <span class="chart-badge">BUTS</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart1"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 2: Notes Moyennes -->
-                <div>
-                    <h3 class="chart-title">⭐ Notes Moyennes</h3>
+                <!-- Chart 2: Notes -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        ⭐ Évaluation de Performance
+                        <span class="chart-badge">NOTES</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart2"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 3: Passes Décisives -->
-                <div>
-                    <h3 class="chart-title">🎁 Passes Décisives</h3>
+                <!-- Chart 3: Passes -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        🎁 Distribution des Passes
+                        <span class="chart-badge">ASSISTS</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart3"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 4: Minutes Jouées -->
-                <div>
-                    <h3 class="chart-title">⏱️ Temps de Jeu</h3>
+                <!-- Chart 4: Minutes -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        ⏱️ Utilisation de l'Effectif
+                        <span class="chart-badge">MINUTES</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart4"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 5: Cartons -->
-                <div>
-                    <h3 class="chart-title">🟨🟥 Discipline</h3>
+                <!-- Chart 5: Discipline -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        🟨 Analyse Disciplinaire
+                        <span class="chart-badge">CARTONS</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart5"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 6: Performance Globale -->
-                <div>
-                    <h3 class="chart-title">📊 Performance Globale</h3>
+                <!-- Chart 6: Global -->
+                <div class="chart-wrapper">
+                    <h3 class="chart-title">
+                        📊 Index de Performance Globale
+                        <span class="chart-badge">SCORE</span>
+                    </h3>
                     <div class="chart-container">
                         <canvas id="chart6"></canvas>
                     </div>
@@ -269,250 +547,279 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        // 🎲 DONNÉES DE TEST LOCALES (simulant votre base de données)
-        const joueurs = [
-            { id: 1, nom: "Van Persie", prenom: "Robin", position: "Attaquant", age: 40 },
-            { id: 2, nom: "Ronaldo", prenom: "Cristiano", position: "Attaquant", age: 39 },
-            { id: 4, nom: "Vidic", prenom: "Nemanja", position: "Defenseur", age: 42 },
-            { id: 7, nom: "Rooney", prenom: "Wayne", position: "Milieu", age: 38 },
-            { id: 8, nom: "De Gea", prenom: "David", position: "Gardien", age: 33 }
-        ];
+document.addEventListener("DOMContentLoaded", async () => {
 
-        const performances = [
-            { id: 1, joueurId: 1, matchId: 1, buts: 2, passesDecisives: 0, noteMatch: 9, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 2, joueurId: 2, matchId: 1, buts: 1, passesDecisives: 2, noteMatch: 8.5, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 3, joueurId: 4, matchId: 1, buts: 1, passesDecisives: 1, noteMatch: 8, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 4, joueurId: 7, matchId: 2, buts: 1, passesDecisives: 1, noteMatch: 8.5, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 5, joueurId: 8, matchId: 2, buts: 1, passesDecisives: 0, noteMatch: 8, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 6, joueurId: 4, matchId: 2, buts: 0, passesDecisives: 1, noteMatch: 7.5, minutesJouees: 85, cartonJaune: 1, cartonRouge: 0 },
-            { id: 7, joueurId: 1, matchId: 3, buts: 2, passesDecisives: 0, noteMatch: 9, minutesJouees: 90, cartonJaune: 0, cartonRouge: 0 },
-            { id: 8, joueurId: 2, matchId: 3, buts: 0, passesDecisives: 2, noteMatch: 8, minutesJouees: 75, cartonJaune: 0, cartonRouge: 0 }
-        ];
+    console.log("📡 Manchester United - Chargement des données...");
 
-        console.log('📊 Données de test chargées:', { joueurs, performances });
+    const response = await fetch('/api/stats');
+    const data = await response.json();
 
-        // Créer map des joueurs
-        const joueursMap = {};
-        joueurs.forEach(j => {
-            joueursMap[j.id] = `${j.prenom} ${j.nom}`;
-        });
+    const joueurs = data.joueurs;
+    const performances = data.performances;
 
-        // Analyse des données
-        const analyseData = {
-            joueurs: {},
-            totalButs: 0,
-            totalPasses: 0,
-            totalCartons: 0
-        };
+    const joueursMap = {};
+    joueurs.forEach(j => {
+        joueursMap[j.id] = `${j.prenom} ${j.nom}`;
+    });
 
-        performances.forEach(perf => {
-            const joueurNom = joueursMap[perf.joueurId] || `Joueur ${perf.joueurId}`;
-            
-            if (!analyseData.joueurs[joueurNom]) {
-                analyseData.joueurs[joueurNom] = {
-                    buts: 0,
-                    passes: 0,
-                    minutes: 0,
-                    notes: [],
-                    cartonsJaunes: 0,
-                    cartonsRouges: 0
-                };
+    const analyseData = {
+        joueurs: {},
+        totalButs: 0,
+        totalPasses: 0,
+        totalCartons: 0
+    };
+
+    performances.forEach(perf => {
+        const joueurNom = joueursMap[perf.joueurId] || `Joueur ${perf.joueurId}`;
+
+        if (!analyseData.joueurs[joueurNom]) {
+            analyseData.joueurs[joueurNom] = {
+                buts: 0,
+                passes: 0,
+                minutes: 0,
+                notes: [],
+                cartonsJaunes: 0,
+                cartonsRouges: 0
+            };
+        }
+
+        const j = analyseData.joueurs[joueurNom];
+        j.buts += perf.buts;
+        j.passes += perf.passesDecisives;
+        j.minutes += perf.minutesJouees;
+        j.cartonsJaunes += perf.cartonJaune;
+        j.cartonsRouges += perf.cartonRouge;
+
+        if (perf.noteMatch > 0) {
+            j.notes.push(perf.noteMatch);
+        }
+
+        analyseData.totalButs += perf.buts;
+        analyseData.totalPasses += perf.passesDecisives;
+        analyseData.totalCartons += perf.cartonJaune + perf.cartonRouge;
+    });
+
+    document.getElementById('totalButs').textContent = analyseData.totalButs;
+    document.getElementById('totalCartons').textContent = analyseData.totalCartons;
+    document.getElementById('totalJoueurs').textContent = joueurs.length;
+
+    const joueursNoms = Object.keys(analyseData.joueurs);
+
+    const muRed = '#DA291C';
+    const muYellow = '#FBE122';
+    const chartColors = ['#DA291C', '#FBE122', '#00B050', '#FF9500', '#666666'];
+
+    Chart.defaults.color = '#A0A0A0';
+    Chart.defaults.borderColor = '#1F1F1F';
+    Chart.defaults.font.family = 'Inter';
+
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
             }
+        }
+    };
 
-            analyseData.joueurs[joueurNom].buts += perf.buts;
-            analyseData.joueurs[joueurNom].passes += perf.passesDecisives;
-            analyseData.joueurs[joueurNom].minutes += perf.minutesJouees;
-            if (perf.noteMatch > 0) analyseData.joueurs[joueurNom].notes.push(perf.noteMatch);
-            analyseData.joueurs[joueurNom].cartonsJaunes += perf.cartonJaune;
-            analyseData.joueurs[joueurNom].cartonsRouges += perf.cartonRouge;
+    // Chart 1: Buts
+    new Chart(document.getElementById('chart1'), {
+        type: 'bar',
+        data: {
+            labels: joueursNoms,
+            datasets: [{
+                label: 'Buts',
+                data: joueursNoms.map(j => analyseData.joueurs[j].buts),
+                backgroundColor: muRed,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            ...commonOptions,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0' }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: '#A0A0A0' }
+                }
+            }
+        }
+    });
 
-            analyseData.totalButs += perf.buts;
-            analyseData.totalPasses += perf.passesDecisives;
-            analyseData.totalCartons += (perf.cartonJaune + perf.cartonRouge);
-        });
+    // Chart 2: Notes
+    new Chart(document.getElementById('chart2'), {
+        type: 'radar',
+        data: {
+            labels: joueursNoms,
+            datasets: [{
+                label: 'Note Moyenne',
+                data: joueursNoms.map(j => {
+                    const notes = analyseData.joueurs[j].notes;
+                    return notes.length ? (notes.reduce((a,b)=>a+b) / notes.length) : 0;
+                }),
+                backgroundColor: 'rgba(218, 41, 28, 0.2)',
+                borderColor: muRed,
+                borderWidth: 3,
+                pointBackgroundColor: muRed,
+                pointBorderColor: '#fff',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    beginAtZero: true,
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0', backdropColor: 'transparent' },
+                    pointLabels: { color: '#A0A0A0', font: { size: 12 } }
+                }
+            }
+        }
+    });
 
-        // Mise à jour des stats
-        document.getElementById('totalButs').textContent = analyseData.totalButs;
-        document.getElementById('totalCartons').textContent = analyseData.totalCartons;
-        document.getElementById('totalJoueurs').textContent = joueurs.length;
-
-        // Préparer les données
-        const joueursNoms = Object.keys(analyseData.joueurs);
-
-        // Configuration commune
-        const commonOptions = {
+    // Chart 3: Passes
+    new Chart(document.getElementById('chart3'), {
+        type: 'doughnut',
+        data: {
+            labels: joueursNoms,
+            datasets: [{
+                data: joueursNoms.map(j => analyseData.joueurs[j].passes),
+                backgroundColor: chartColors,
+                borderWidth: 3,
+                borderColor: '#141414'
+            }]
+        },
+        options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { display: false }
-            }
-        };
-
-        // Chart 1: Buts par joueur
-        new Chart(document.getElementById('chart1'), {
-            type: 'bar',
-            data: {
-                labels: joueursNoms,
-                datasets: [{
-                    label: 'Buts',
-                    data: joueursNoms.map(j => analyseData.joueurs[j].buts),
-                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                    borderColor: 'rgb(102, 126, 234)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                ...commonOptions,
-                indexAxis: 'y',
-                scales: {
-                    x: { beginAtZero: true, ticks: { stepSize: 1 } }
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: { color: '#A0A0A0', padding: 15, font: { size: 11 } }
                 }
             }
-        });
+        }
+    });
 
-        // Chart 2: Notes moyennes (Radar)
-        const notesMoyennes = joueursNoms.map(j => {
-            const notes = analyseData.joueurs[j].notes;
-            return notes.length > 0 ? (notes.reduce((a, b) => a + b, 0) / notes.length).toFixed(1) : 0;
-        });
-
-        new Chart(document.getElementById('chart2'), {
-            type: 'radar',
-            data: {
-                labels: joueursNoms,
-                datasets: [{
-                    label: 'Note Moyenne',
-                    data: notesMoyennes,
-                    backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                    borderColor: 'rgb(16, 185, 129)',
-                    borderWidth: 2,
-                    pointBackgroundColor: 'rgb(16, 185, 129)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(16, 185, 129)'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    r: { beginAtZero: true, max: 10 }
-                }
-            }
-        });
-
-        // Chart 3: Passes décisives (Doughnut)
-        new Chart(document.getElementById('chart3'), {
-            type: 'doughnut',
-            data: {
-                labels: joueursNoms,
-                datasets: [{
-                    data: joueursNoms.map(j => analyseData.joueurs[j].passes),
-                    backgroundColor: [
-                        'rgba(102, 126, 234, 0.8)',
-                        'rgba(118, 75, 162, 0.8)',
-                        'rgba(16, 185, 129, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(239, 68, 68, 0.8)'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'right' }
-                }
-            }
-        });
-
-        // Chart 4: Minutes jouées
-        new Chart(document.getElementById('chart4'), {
-            type: 'bar',
-            data: {
-                labels: joueursNoms,
-                datasets: [{
-                    label: 'Minutes',
-                    data: joueursNoms.map(j => analyseData.joueurs[j].minutes),
-                    backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                    borderColor: 'rgb(245, 158, 11)',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                ...commonOptions,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-
-        // Chart 5: Cartons
-        new Chart(document.getElementById('chart5'), {
-            type: 'bar',
-            data: {
-                labels: joueursNoms,
-                datasets: [
-                    {
-                        label: 'Cartons Jaunes',
-                        data: joueursNoms.map(j => analyseData.joueurs[j].cartonsJaunes),
-                        backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                        borderColor: 'rgb(245, 158, 11)',
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Cartons Rouges',
-                        data: joueursNoms.map(j => analyseData.joueurs[j].cartonsRouges),
-                        backgroundColor: 'rgba(239, 68, 68, 0.8)',
-                        borderColor: 'rgb(239, 68, 68)',
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: true, position: 'top' }
+    // Chart 4: Minutes
+    new Chart(document.getElementById('chart4'), {
+        type: 'bar',
+        data: {
+            labels: joueursNoms,
+            datasets: [{
+                label: 'Minutes',
+                data: joueursNoms.map(j => analyseData.joueurs[j].minutes),
+                backgroundColor: muYellow,
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            ...commonOptions,
+            scales: {
+                x: {
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0' }
                 },
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1 } }
+                y: {
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0' }
                 }
             }
-        });
+        }
+    });
 
-        // Chart 6: Performance globale (Polar)
-        new Chart(document.getElementById('chart6'), {
-            type: 'polarArea',
-            data: {
-                labels: joueursNoms,
-                datasets: [{
-                    label: 'Score Global',
-                    data: joueursNoms.map(j => {
-                        const d = analyseData.joueurs[j];
-                        return (d.buts * 3) + (d.passes * 2) + (d.notes.length > 0 ? d.notes.reduce((a, b) => a + b, 0) / d.notes.length : 0);
-                    }),
-                    backgroundColor: [
-                        'rgba(102, 126, 234, 0.6)',
-                        'rgba(118, 75, 162, 0.6)',
-                        'rgba(16, 185, 129, 0.6)',
-                        'rgba(245, 158, 11, 0.6)',
-                        'rgba(239, 68, 68, 0.6)'
-                    ],
-                    borderWidth: 2,
-                    borderColor: '#fff'
-                }]
+    // Chart 5: Cartons
+    new Chart(document.getElementById('chart5'), {
+        type: 'bar',
+        data: {
+            labels: joueursNoms,
+            datasets: [
+                {
+                    label: 'Cartons Jaunes',
+                    data: joueursNoms.map(j => analyseData.joueurs[j].cartonsJaunes),
+                    backgroundColor: '#FBE122',
+                    borderRadius: 6,
+                    borderSkipped: false
+                },
+                {
+                    label: 'Cartons Rouges',
+                    data: joueursNoms.map(j => analyseData.joueurs[j].cartonsRouges),
+                    backgroundColor: '#DA291C',
+                    borderRadius: 6,
+                    borderSkipped: false
+                }
+            ]
+        },
+        options: {
+            ...commonOptions,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { color: '#A0A0A0', padding: 15 }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false
+            scales: {
+                x: {
+                    stacked: false,
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0' }
+                },
+                y: {
+                    stacked: false,
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0' }
+                }
             }
-        });
+        }
+    });
 
-        console.log('✅ Tous les graphiques sont générés !');
+    // Chart 6: Performance Globale
+    new Chart(document.getElementById('chart6'), {
+        type: 'polarArea',
+        data: {
+            labels: joueursNoms,
+            datasets: [{
+                data: joueursNoms.map(j => {
+                    const d = analyseData.joueurs[j];
+                    const noteMoy = d.notes.length ? d.notes.reduce((a,b)=>a+b) / d.notes.length : 0;
+                    return d.buts*3 + d.passes*2 + noteMoy;
+                }),
+                backgroundColor: chartColors.map(c => c + '99'),
+                borderColor: chartColors,
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: { color: '#A0A0A0', padding: 15 }
+                }
+            },
+            scales: {
+                r: {
+                    grid: { color: '#1F1F1F' },
+                    ticks: { color: '#A0A0A0', backdropColor: 'transparent' }
+                }
+            }
+        }
+    });
+
+});
     </script>
 </body>
 </html>
