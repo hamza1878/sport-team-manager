@@ -30,8 +30,7 @@ class Joueur
     #[ORM\Column(nullable: true)]
     private ?int $numeroMaillot = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $photo = null;
+  
 
     #[ORM\ManyToOne(inversedBy: 'joueurs')]
     private ?Equipe $equipe = null;
@@ -60,8 +59,7 @@ class Joueur
     public function getNumeroMaillot(): ?int { return $this->numeroMaillot; }
     public function setNumeroMaillot(?int $num): static { $this->numeroMaillot = $num; return $this; }
 
-    public function getPhoto(): ?string { return $this->photo; }
-    public function setPhoto(?string $photo): static { $this->photo = $photo; return $this; }
+    
 
     public function getEquipe(): ?Equipe { return $this->equipe; }
     public function setEquipe(?Equipe $e): static { $this->equipe = $e; return $this; }

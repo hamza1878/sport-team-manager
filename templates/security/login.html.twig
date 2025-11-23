@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manchester United - Red Devils Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --mu-red: #DA291C;
+            --mu-red-dark: #B71C1C;
+            --mu-yellow: #FBE122;
+            --mu-black: #000000;
+            --mu-dark-bg: #0A0A0A;
+            --mu-dark-card: #141414;
+            --mu-border: #1F1F1F;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--mu-dark-bg);
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(218, 41, 28, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(251, 225, 34, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-box {
+            background: var(--mu-dark-card);
+            border: 1px solid var(--mu-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--mu-red) 0%, var(--mu-yellow) 100%);
+        }
+
+        .login-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--mu-red);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin: 0 auto 2rem;
+            box-shadow: 0 8px 24px rgba(218, 41, 28, 0.4);
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-title h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .devils-badge {
+            display: inline-block;
+            background: rgba(218, 41, 28, 0.1);
+            color: var(--mu-red);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Style pour les messages flash */
+        .alert {
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ff6b6b;
+        }
+
+        .alert-success {
+            background: rgba(0, 176, 80, 0.15);
+            border: 1px solid rgba(0, 176, 80, 0.5);
+            color: #00ff88;
+        }
+
+        .alert-info {
+            background: rgba(74, 172, 254, 0.15);
+            border: 1px solid rgba(74, 172, 254, 0.5);
+            color: #4aacfe;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--mu-border);
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--mu-red);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.813rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--mu-red);
+        }
+
+        .forgot-password {
+            color: var(--mu-red);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .forgot-password:hover {
+            color: var(--mu-red-dark);
+        }
+
+        .login-button {
+            background: var(--mu-red);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-button:hover {
+            background: var(--mu-red-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(218, 41, 28, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--mu-border);
+        }
+
+        .login-footer p {
+            font-size: 0.813rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .login-footer a {
+            color: var(--mu-red);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box">
+          <div class="login-logo">
+<img  src="{{ asset('images/man.png') }}" class="login-logo" alt="Manchester United Logo">
+</div>
+            <div class="login-title">
+                <h2>Red Devils Access</h2>
+                <div class="login-subtitle">
+                    <span class="devils-badge">🔥 Coaching Staff Only</span>
+                </div>
+            </div>
+
+            {# Message d'erreur de connexion #}
+            {% if error %}
+                <div class="alert alert-danger">
+                    ⚠️ {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            {# Messages flash (succès, info, etc.) #}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    ✓ {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    ⚠️ {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('info') %}
+                <div class="alert alert-info">
+                    ℹ️ {{ message }}
+                </div>
+            {% endfor %}
+
+            <form class="login-form" method="post">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="coach@manutd.com"
+                        value="{{ last_username }}"
+                        required
+                        autofocus
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mot de passe</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="login-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember_me" name="_remember_me" checked>
+                        <span>Se souvenir de moi</span>
+                    </label>
+                    <a href="#" class="forgot-password">Mot de passe oublié?</a>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Connexion 🔓
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p>Accès réservé au personnel technique<br>
+                <a href="{{ path('request_access') }}">Demander un accès</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

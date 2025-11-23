@@ -21,7 +21,6 @@ class JoueurType extends AbstractType
             ->add('age', IntegerType::class)
             ->add('position', TextType::class)
             ->add('numeroMaillot', IntegerType::class)
-            ->add('photo', TextType::class)
             ->add('equipe', EntityType::class, [
                 'class' => Equipe::class,
                 'choice_label' => 'nom',

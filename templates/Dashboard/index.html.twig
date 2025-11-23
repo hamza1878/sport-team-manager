@@ -289,7 +289,20 @@
             display: flex;
             gap: 0.5rem;
         }
-
+ .login-logo {
+            width: 100px;
+            height: 100px;
+            background: var(--mu-red);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin: 0 auto 2rem;
+            box-shadow: 0 8px 24px rgba(218, 41, 28, 0.4);
+        }
         .view-btn {
             padding: 0.5rem 1rem;
             border: 1px solid var(--mu-border);
@@ -398,7 +411,9 @@
         <!-- Header -->
         <div class="dashboard-header">
             <div class="header-left">
-                <div class="mu-logo">MU</div>
+                         <div class="login-logo">
+<img  src="{{ asset('images/man.png') }}" class="login-logo" alt="Manchester United Logo">
+</div>
                 <div class="header-title">
                     <h1>Performance Analytics Dashboard</h1>
                     <div class="header-subtitle">Manchester United F.C.</div>

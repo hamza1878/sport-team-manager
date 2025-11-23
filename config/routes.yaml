@@ -1,5 +1,56 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+# Routes de connexion/déconnexion
+app_login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+app_logout:
+    path: /logout
+    methods: GET
+
+# Route du dashboard principal
+dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index
+
+# Routes de demande d'accès
+request_access:
+    path: /request-access
+    controller: App\Controller\AccessController::requestAccess
+
+send_access_request:
+    path: /send-access-request
+    methods: POST
+    controller: App\Controller\AccessController::sendAccessRequest
+
+# Routes d'envoi et validation de token
+send_access:
+    path: /send-access
+    methods: POST
+    controller: App\Controller\AccessController::sendAccess
+
+access_login:
+    path: /access-login/{token}
+    controller: App\Controller\AccessController::accessLogin
+
+api_stats:
+    path: /api/stats
+    controller: App\Controller\ApiStatsController::stats
+    methods: GET
+validate_access_request:
+    path: /validate-access/{token}
+    controller: App\Controller\AccessController::validateAccessRequest
+# Routes admin
+admin_users:
+    path: /admin/users
+    controller: App\Controller\AdminController::manageUsers
+
+admin_create_user:
+    path: /admin/create-user
+    methods: POST
+    controller: App\Controller\AdminController::createUser
+
+
+admin_delete_user:
+    path: /admin/delete-user/{id}
+    methods: DELETE
+    controller: App\Controller\AdminController::deleteUser

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Gestion des Utilisateurs</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0A0A0A;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: #141414;
+            border: 1px solid #1F1F1F;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            color: #DA291C;
+        }
+        
+        .card {
+            background: #141414;
+            border: 1px solid #1F1F1F;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        input[type="email"], input[type="checkbox"] {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1F1F1F;
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+        
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            text-transform: none;
+        }
+        
+        button {
+            background: #DA291C;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #B71C1C;
+        }
+        
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .users-table th, .users-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #1F1F1F;
+        }
+        
+        .users-table th {
+            color: #DA291C;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+        }
+        
+        .btn-delete {
+            background: #ef4444;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        
+        .btn-send {
+            background: #00B050;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            margin-right: 0.5rem;
+        }
+        
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .message.success {
+            background: rgba(0, 176, 80, 0.1);
+            border: 1px solid #00B050;
+            color: #00B050;
+        }
+        
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+        
+        .message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔴 Gestion des Utilisateurs - Admin MU</h1>
+            <a href="{{ path('dashboard') }}" style="color: white; text-decoration: none;">← Dashboard</a>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 1.5rem;">➕ Créer un nouvel utilisateur</h2>
+            
+            <div id="message" class="message"></div>
+            
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="hamza123@gmail.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="send_access" name="send_access" checked>
+                        <span>Envoyer automatiquement le lien d'accès par email</span>
+                    </label>
+                </div>
+                
+                <button type="submit">Créer l'utilisateur</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 style="margin-bottom: 1.5rem;">👥 Liste des utilisateurs</h2>
+            
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>Date de création</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    {% for user in users %}
+                    <tr data-user-id="{{ user.id }}">
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>-</td>
+                        <td>
+                            <button class="btn-send" onclick="sendAccess('{{ user.email }}')">📧 Envoyer accès</button>
+                            <button class="btn-delete" onclick="deleteUser({{ user.id }})">🗑️ Supprimer</button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #666;">Aucun utilisateur</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const messageEl = document.getElementById('message');
+
+        function showMessage(text, type) {
+            messageEl.textContent = text;
+            messageEl.className = 'message ' + type + ' show';
+            setTimeout(() => messageEl.classList.remove('show'), 5000);
+        }
+
+        // Créer utilisateur
+        document.getElementById('createUserForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            try {
+                const response = await fetch('{{ path('admin_create_user') }}', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    this.reset();
+                    location.reload();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Erreur de connexion', 'error');
+            }
+        });
+
+        // Envoyer accès
+        async function sendAccess(email) {
+            if (!confirm('Envoyer le lien d\'accès à ' + email + ' ?')) return;
+            
+            try {
+                const response = await fetch('{{ path('send_access') }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'email=' + encodeURIComponent(email)
+                });
+                
+                const data = await response.json();
+                showMessage(data.message, data.success ? 'success' : 'error');
+            } catch (error) {
+                showMessage('Erreur d\'envoi', 'error');
+            }
+        }
+
+        // Supprimer utilisateur
+        async function deleteUser(id) {
+            if (!confirm('Supprimer cet utilisateur ?')) return;
+            
+            try {
+                const response = await fetch(`/admin/delete-user/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    document.querySelector(`tr[data-user-id="${id}"]`).remove();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('Erreur de suppression', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

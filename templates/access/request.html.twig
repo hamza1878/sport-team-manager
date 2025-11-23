@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande d'Accès - Manchester United</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background: #0A0A0A;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: #141414;
+            border: 1px solid #1F1F1F;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #DA291C 0%, #FBE122 100%);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #DA291C;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-weight: 900;
+            box-shadow: 0 8px 24px rgba(218, 41, 28, 0.4);
+        }
+        
+        h1 {
+            color: white;
+            font-size: 1.75rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #A0A0A0;
+            font-size: 0.875rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(218, 41, 28, 0.1);
+            color: #DA291C;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        input, textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #1F1F1F;
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #DA291C;
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.1);
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: #A0A0A0;
+        }
+        
+        button {
+            width: 100%;
+            background: #DA291C;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        
+        button:hover {
+            background: #B71C1C;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(218, 41, 28, 0.4);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .message {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        .message.success {
+            background: rgba(0, 176, 80, 0.1);
+            border: 1px solid #00B050;
+            color: #00B050;
+        }
+        
+        .message.error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+        }
+        
+        .message.show {
+            display: block;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #A0A0A0;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .back-link:hover {
+            color: #DA291C;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">MU</div>
+        <h1>Demande d'Accès</h1>
+        <div class="subtitle">
+            <span class="badge">🔥 Coaching Staff</span>
+        </div>
+
+        <form id="accessForm">
+            <div class="form-group">
+                <label for="name">Nom Complet</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    placeholder="Jean Dupont" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Adresse Email</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="hamza123@gmail.com" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="role">Fonction</label>
+                <input 
+                    type="text" 
+                    id="role" 
+                    name="role" 
+                    placeholder="Assistant Coach, Analyste, etc." 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message (optionnel)</label>
+                <textarea 
+                    id="message" 
+                    name="message" 
+                    placeholder="Raison de la demande d'accès..."
+                ></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn">
+                📧 Envoyer la demande
+            </button>
+        </form>
+
+        <div id="message" class="message"></div>
+
+        <a href="{{ path('app_login') }}" class="back-link">← Retour à la connexion</a>
+    </div>
+
+    <script>
+        document.getElementById('accessForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = document.getElementById('submitBtn');
+            const message = document.getElementById('message');
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Envoi en cours...';
+            
+            try {
+                const response = await fetch('{{ path('send_access_request') }}', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                message.classList.remove('success', 'error');
+                message.classList.add(data.success ? 'success' : 'error', 'show');
+                message.textContent = data.message;
+                
+                if (data.success) {
+                    this.reset();
+                }
+            } catch (error) {
+                message.classList.remove('success');
+                message.classList.add('error', 'show');
+                message.textContent = '❌ Erreur de connexion au serveur';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📧 Envoyer la demande';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -74,7 +74,6 @@ class CoachController extends AbstractController
             ];
         }
         
-        // Debug: vérifier si les données sont bien récupérées
         dump([
             'matchs_count' => count($matchsData),
             'joueurs_count' => count($joueursData),
